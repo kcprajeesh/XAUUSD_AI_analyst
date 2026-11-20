@@ -1,0 +1,1078 @@
+{
+  "$defs": {
+    "Candle": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "series": {
+          "$ref": "#/$defs/ProviderSeries"
+        },
+        "opened_at": {
+          "format": "date-time",
+          "title": "Opened At",
+          "type": "string"
+        },
+        "closes_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Closes At"
+        },
+        "boundary_basis": {
+          "enum": [
+            "elapsed_interval",
+            "unverified_daily"
+          ],
+          "title": "Boundary Basis",
+          "type": "string"
+        },
+        "source_timestamp": {
+          "minLength": 1,
+          "title": "Source Timestamp",
+          "type": "string"
+        },
+        "source_timestamp_meaning": {
+          "const": "candle_opening_time",
+          "default": "candle_opening_time",
+          "title": "Source Timestamp Meaning",
+          "type": "string"
+        },
+        "source_timezone": {
+          "const": "UTC",
+          "default": "UTC",
+          "title": "Source Timezone",
+          "type": "string"
+        },
+        "open": {
+          "gt": 0,
+          "title": "Open",
+          "type": "string"
+        },
+        "high": {
+          "gt": 0,
+          "title": "High",
+          "type": "string"
+        },
+        "low": {
+          "gt": 0,
+          "title": "Low",
+          "type": "string"
+        },
+        "close": {
+          "gt": 0,
+          "title": "Close",
+          "type": "string"
+        },
+        "volume": {
+          "anyOf": [
+            {
+              "ge": 0,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Volume"
+        },
+        "volume_semantics": {
+          "enum": [
+            "not_provided",
+            "provider_reported_unverified"
+          ],
+          "title": "Volume Semantics",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/CandleStatus"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source_row_index": {
+          "minimum": 0,
+          "title": "Source Row Index",
+          "type": "integer"
+        },
+        "quality_flags": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/QualityCode"
+          },
+          "title": "Quality Flags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "series",
+        "opened_at",
+        "closes_at",
+        "boundary_basis",
+        "source_timestamp",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume_semantics",
+        "status",
+        "provenance",
+        "source_row_index"
+      ],
+      "title": "Candle",
+      "type": "object"
+    },
+    "CandleStatus": {
+      "enum": [
+        "forming",
+        "closed",
+        "boundary_unverified"
+      ],
+      "title": "CandleStatus",
+      "type": "string"
+    },
+    "Coverage": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "series_id": {
+          "title": "Series Id",
+          "type": "string"
+        },
+        "ingestion_id": {
+          "exclusiveMinimum": 0,
+          "title": "Ingestion Id",
+          "type": "integer"
+        },
+        "closed_count": {
+          "minimum": 0,
+          "title": "Closed Count",
+          "type": "integer"
+        },
+        "forming_count": {
+          "minimum": 0,
+          "title": "Forming Count",
+          "type": "integer"
+        },
+        "unverified_count": {
+          "minimum": 0,
+          "title": "Unverified Count",
+          "type": "integer"
+        },
+        "first_closed_open": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "First Closed Open"
+        },
+        "last_closed_open": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Last Closed Open"
+        },
+        "calendar_verified": {
+          "const": false,
+          "default": false,
+          "title": "Calendar Verified",
+          "type": "boolean"
+        },
+        "complete": {
+          "const": false,
+          "default": false,
+          "title": "Complete",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "series_id",
+        "ingestion_id",
+        "closed_count",
+        "forming_count",
+        "unverified_count",
+        "first_closed_open",
+        "last_closed_open"
+      ],
+      "title": "Coverage",
+      "type": "object"
+    },
+    "Gap": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "after_open": {
+          "format": "date-time",
+          "title": "After Open",
+          "type": "string"
+        },
+        "before_open": {
+          "format": "date-time",
+          "title": "Before Open",
+          "type": "string"
+        },
+        "nominal_missing_count": {
+          "exclusiveMinimum": 0,
+          "title": "Nominal Missing Count",
+          "type": "integer"
+        },
+        "calendar_verified": {
+          "const": false,
+          "default": false,
+          "title": "Calendar Verified",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "after_open",
+        "before_open",
+        "nominal_missing_count"
+      ],
+      "title": "Gap",
+      "type": "object"
+    },
+    "HistoricalRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "series": {
+          "$ref": "#/$defs/ProviderSeries"
+        },
+        "start_date": {
+          "format": "date-time",
+          "title": "Start Date",
+          "type": "string"
+        },
+        "end_date": {
+          "format": "date-time",
+          "title": "End Date",
+          "type": "string"
+        },
+        "outputsize": {
+          "default": 5000,
+          "maximum": 5000,
+          "minimum": 1,
+          "title": "Outputsize",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "series",
+        "start_date",
+        "end_date"
+      ],
+      "title": "HistoricalRequest",
+      "type": "object"
+    },
+    "HistoricalRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "previous_record_id": {
+          "exclusiveMinimum": 0,
+          "title": "Previous Record Id",
+          "type": "integer"
+        },
+        "revised_record_id": {
+          "exclusiveMinimum": 0,
+          "title": "Revised Record Id",
+          "type": "integer"
+        },
+        "opened_at": {
+          "format": "date-time",
+          "title": "Opened At",
+          "type": "string"
+        },
+        "detected_at": {
+          "format": "date-time",
+          "title": "Detected At",
+          "type": "string"
+        },
+        "changed_fields": {
+          "items": {
+            "enum": [
+              "open",
+              "high",
+              "low",
+              "close",
+              "volume",
+              "volume_semantics"
+            ],
+            "type": "string"
+          },
+          "title": "Changed Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "previous_record_id",
+        "revised_record_id",
+        "opened_at",
+        "detected_at",
+        "changed_fields"
+      ],
+      "title": "HistoricalRevision",
+      "type": "object"
+    },
+    "IngestionRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "ingestion_id": {
+          "exclusiveMinimum": 0,
+          "title": "Ingestion Id",
+          "type": "integer"
+        },
+        "series": {
+          "$ref": "#/$defs/ProviderSeries"
+        },
+        "requested_start": {
+          "format": "date-time",
+          "title": "Requested Start",
+          "type": "string"
+        },
+        "requested_end": {
+          "format": "date-time",
+          "title": "Requested End",
+          "type": "string"
+        },
+        "response_limit": {
+          "maximum": 5000,
+          "minimum": 1,
+          "title": "Response Limit",
+          "type": "integer"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source_rows": {
+          "items": {
+            "$ref": "#/$defs/SourceRow"
+          },
+          "title": "Source Rows",
+          "type": "array"
+        },
+        "report": {
+          "$ref": "#/$defs/ValidationReport"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProviderError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "ingestion_id",
+        "series",
+        "requested_start",
+        "requested_end",
+        "response_limit",
+        "provenance",
+        "source_rows",
+        "report"
+      ],
+      "title": "IngestionRecord",
+      "type": "object"
+    },
+    "Instrument": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "instrument_id": {
+          "minLength": 1,
+          "title": "Instrument Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/InstrumentKind"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "base": {
+          "const": "XAU",
+          "default": "XAU",
+          "title": "Base",
+          "type": "string"
+        },
+        "quote": {
+          "const": "USD",
+          "default": "USD",
+          "title": "Quote",
+          "type": "string"
+        },
+        "price_unit": {
+          "const": "USD_per_troy_ounce",
+          "default": "USD_per_troy_ounce",
+          "title": "Price Unit",
+          "type": "string"
+        },
+        "broker": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Broker"
+        },
+        "contract_month": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Contract Month"
+        },
+        "benchmark_fix": {
+          "anyOf": [
+            {
+              "enum": [
+                "AM",
+                "PM"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Benchmark Fix"
+        }
+      },
+      "required": [
+        "instrument_id",
+        "kind",
+        "name"
+      ],
+      "title": "Instrument",
+      "type": "object"
+    },
+    "InstrumentKind": {
+      "enum": [
+        "spot_aggregate",
+        "broker_gold_cfd",
+        "comex_gc_future",
+        "lbma_benchmark"
+      ],
+      "title": "InstrumentKind",
+      "type": "string"
+    },
+    "Interval": {
+      "enum": [
+        "1day",
+        "4h",
+        "1h",
+        "15min",
+        "5min"
+      ],
+      "title": "Interval",
+      "type": "string"
+    },
+    "NormalizedBatch": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "series": {
+          "$ref": "#/$defs/ProviderSeries"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "source_rows": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/SourceRow"
+          },
+          "maxItems": 5000,
+          "title": "Source Rows",
+          "type": "array"
+        },
+        "candles": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Candle"
+          },
+          "title": "Candles",
+          "type": "array"
+        },
+        "report": {
+          "$ref": "#/$defs/ValidationReport"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProviderError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "series",
+        "provenance",
+        "report"
+      ],
+      "title": "NormalizedBatch",
+      "type": "object"
+    },
+    "PaginationDecision": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "next_page",
+            "range_boundary_reached",
+            "indeterminate"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "next_request": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HistoricalRequest"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "state",
+        "detail"
+      ],
+      "title": "PaginationDecision",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "provider": {
+          "const": "twelve_data",
+          "default": "twelve_data",
+          "title": "Provider",
+          "type": "string"
+        },
+        "native_symbol": {
+          "const": "XAU/USD",
+          "default": "XAU/USD",
+          "title": "Native Symbol",
+          "type": "string"
+        },
+        "endpoint": {
+          "const": "time_series",
+          "default": "time_series",
+          "title": "Endpoint",
+          "type": "string"
+        },
+        "input_kind": {
+          "enum": [
+            "synthetic",
+            "provider_response"
+          ],
+          "title": "Input Kind",
+          "type": "string"
+        },
+        "retrieved_at": {
+          "format": "date-time",
+          "title": "Retrieved At",
+          "type": "string"
+        },
+        "payload_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Payload Sha256",
+          "type": "string"
+        },
+        "payload_hash_basis": {
+          "const": "public_meta_and_source_rows_v1",
+          "default": "public_meta_and_source_rows_v1",
+          "title": "Payload Hash Basis",
+          "type": "string"
+        },
+        "source_metadata": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "propertyNames": {
+            "enum": [
+              "symbol",
+              "interval",
+              "timezone",
+              "currency"
+            ]
+          },
+          "title": "Source Metadata",
+          "type": "object"
+        }
+      },
+      "required": [
+        "input_kind",
+        "retrieved_at",
+        "payload_sha256"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "ProviderError": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "provider_error",
+            "invalid_response"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "provider_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Code"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "detail"
+      ],
+      "title": "ProviderError",
+      "type": "object"
+    },
+    "ProviderSeries": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "series_id": {
+          "title": "Series Id",
+          "type": "string"
+        },
+        "provider": {
+          "const": "twelve_data",
+          "default": "twelve_data",
+          "title": "Provider",
+          "type": "string"
+        },
+        "instrument_id": {
+          "const": "xau-usd:spot-aggregate",
+          "default": "xau-usd:spot-aggregate",
+          "title": "Instrument Id",
+          "type": "string"
+        },
+        "native_symbol": {
+          "const": "XAU/USD",
+          "default": "XAU/USD",
+          "title": "Native Symbol",
+          "type": "string"
+        },
+        "interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "policy_version": {
+          "const": "td-xau-utc-v1",
+          "default": "td-xau-utc-v1",
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "source_timezone": {
+          "const": "UTC",
+          "default": "UTC",
+          "title": "Source Timezone",
+          "type": "string"
+        }
+      },
+      "required": [
+        "series_id",
+        "interval"
+      ],
+      "title": "ProviderSeries",
+      "type": "object"
+    },
+    "QualityCode": {
+      "enum": [
+        "missing_timestamp",
+        "invalid_timestamp",
+        "invalid_ohlc",
+        "invalid_volume",
+        "invalid_row",
+        "invalid_response",
+        "empty_response",
+        "duplicate",
+        "conflicting_duplicate",
+        "forming_excluded",
+        "calendar_unverified",
+        "boundary_unverified",
+        "missing_candle_candidates",
+        "irregular_cadence",
+        "outlier",
+        "historical_revision",
+        "stale_observation"
+      ],
+      "title": "QualityCode",
+      "type": "string"
+    },
+    "QualityIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "code": {
+          "$ref": "#/$defs/QualityCode"
+        },
+        "row_index": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Row Index"
+        },
+        "opened_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Opened At"
+        },
+        "detail": {
+          "title": "Detail",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "detail"
+      ],
+      "title": "QualityIssue",
+      "type": "object"
+    },
+    "SourceRow": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "row_index": {
+          "minimum": 0,
+          "title": "Row Index",
+          "type": "integer"
+        },
+        "fields": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "propertyNames": {
+            "enum": [
+              "datetime",
+              "open",
+              "high",
+              "low",
+              "close",
+              "volume"
+            ]
+          },
+          "title": "Fields",
+          "type": "object"
+        }
+      },
+      "required": [
+        "row_index",
+        "fields"
+      ],
+      "title": "SourceRow",
+      "type": "object"
+    },
+    "TimeframePolicy": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "policy_version": {
+          "const": "td-xau-utc-v1",
+          "default": "td-xau-utc-v1",
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "display_name": {
+          "title": "Display Name",
+          "type": "string"
+        },
+        "nominal_seconds": {
+          "title": "Nominal Seconds",
+          "type": "integer"
+        },
+        "calendar_verified": {
+          "const": false,
+          "default": false,
+          "title": "Calendar Verified",
+          "type": "boolean"
+        },
+        "daily_boundary_verified": {
+          "const": false,
+          "default": false,
+          "title": "Daily Boundary Verified",
+          "type": "boolean"
+        },
+        "timestamp_meaning": {
+          "const": "candle_opening_time",
+          "default": "candle_opening_time",
+          "title": "Timestamp Meaning",
+          "type": "string"
+        },
+        "source_timezone": {
+          "const": "UTC",
+          "default": "UTC",
+          "title": "Source Timezone",
+          "type": "string"
+        }
+      },
+      "required": [
+        "interval",
+        "display_name",
+        "nominal_seconds"
+      ],
+      "title": "TimeframePolicy",
+      "type": "object"
+    },
+    "ValidationReport": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "policy_version": {
+          "const": "td-xau-utc-v1",
+          "default": "td-xau-utc-v1",
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "validation_version": {
+          "const": "quality-v1",
+          "default": "quality-v1",
+          "title": "Validation Version",
+          "type": "string"
+        },
+        "issues": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/QualityIssue"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "gaps": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "title": "Gaps",
+          "type": "array"
+        },
+        "revisions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/HistoricalRevision"
+          },
+          "title": "Revisions",
+          "type": "array"
+        }
+      },
+      "title": "ValidationReport",
+      "type": "object"
+    }
+  },
+  "anyOf": [
+    {
+      "$ref": "#/$defs/Instrument"
+    },
+    {
+      "$ref": "#/$defs/ProviderSeries"
+    },
+    {
+      "$ref": "#/$defs/TimeframePolicy"
+    },
+    {
+      "$ref": "#/$defs/HistoricalRequest"
+    },
+    {
+      "$ref": "#/$defs/NormalizedBatch"
+    },
+    {
+      "$ref": "#/$defs/HistoricalRevision"
+    },
+    {
+      "$ref": "#/$defs/Coverage"
+    },
+    {
+      "$ref": "#/$defs/IngestionRecord"
+    },
+    {
+      "$ref": "#/$defs/PaginationDecision"
+    }
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XAU/USD Offline Data Foundation v1.0"
+}

@@ -1,0 +1,13 @@
+{
+  "fixture_kind": "synthetic",
+  "description": "Invented offline contract examples only. These are NOT XAU/USD market observations or a captured provider response.",
+  "payload": {
+    "meta": {"symbol": "XAU/USD", "interval": "5min", "timezone": "UTC", "currency": "USD"},
+    "status": "ok",
+    "values": [
+      {"datetime": "2026-01-15 10:00:00", "open": "2000.123456789012345678901234567890", "high": "2002.00", "low": "1999.00", "close": "2001.00"},
+      {"datetime": "2026-01-15 10:05:00", "open": "2001.00", "high": "2003.00", "low": "2000.00", "close": "2002.00"},
+      {"datetime": "2026-01-15 10:10:00", "open": "2002.00", "high": "2004.00", "low": "2001.00", "close": "2003.00"}
+    ]
+  }
+}

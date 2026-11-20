@@ -1,0 +1,27 @@
+{
+  "properties": {
+    "status": {
+      "type": "string",
+      "const": "ok",
+      "title": "Status",
+      "default": "ok"
+    },
+    "service": {
+      "type": "string",
+      "const": "XAUUSD AI Analyst",
+      "title": "Service",
+      "default": "XAUUSD AI Analyst"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Timestamp"
+    }
+  },
+  "additionalProperties": false,
+  "type": "object",
+  "required": [
+    "timestamp"
+  ],
+  "title": "HealthResponse"
+}
